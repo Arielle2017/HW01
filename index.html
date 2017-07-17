@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>To Do App</title>
+  <!-- Including CSS & JS in this file for ease of demoing-->
+  <style type="text/css">
+    * {
+      box-sizing: border-box;
+    }
+    form {
+      margin-left: 5%;
+      padding: 1rem;
+      border: 1px gray solid;
+      width: 90%;
+    }
+    label:after {
+      content: "";
+      display: table;
+      margin-bottom: 1rem;
+    }
+
+    @media(min-width: 700px){
+      form {
+        width: 40%;
+        float: left;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <h1>Let's Try This App</h1>
+  <p>Are you Ready?</p>
+
+
+  <div id="parent"></div>
+
+
+  <form name="to do list">
+    <fieldset>
+      <legend>Who will be doing the task?</legend>
+      <label>
+        <input type="radio" name="who" value="Jason">
+        Jason
+      </label>
+      <label>
+      <input type="radio" name="who" value="Judy">
+      Judy
+      </label>
+      <label>
+        <input type="radio" name="who" value="Mark">
+        Mark
+      </label>
+    </fieldset>
+    <br>
+    <br>
+    <label> Please type To-Do description here:
+      <input type="text" name="toDoDes">
+    </label>
+    <br>
+    <label>
+      <input type="text" name="difficulty" value="difficulty">
+      Difficult Level
+    </label>
+     <select id="ddlViewBy">
+       <option value="1" selected="selected">Easy</option>
+       <option value="2">Medium</option>
+       <option value="3">Hard</option>
+     </select>
+     <br>
+     <br>
+    <input type="submit">
+    <br>
+
+    <div id="container"></div>
+  </form>
+
+
+<script type="text/javascript">
+  var obj = {
+  "toDoDes": "",
+	"who": "",
+	"diff": ""
+  }
+
+  var holder = {
+    tasks: [obj]
+  }
+
+
+
+  // This func builds a list of toDoDes types of all tasks in holder,
+  // prints to HTML (practice from slide 41)
+  function drawList() {
+    // Select #list-container element from HTML (add it to HTML first!)
+    var container = document.getElementById("container")
+    // Clear out existing contents
+    container.innerHTML = ""
+    // Create a <ul> node
+    var ul = document.createElement("ul")
+    for(var i=1; i<holder.tasks.length; i++){
+      // Create an <li> node
+      var li = document.createElement("li")
+      // Add the toDoDes string to the li
+      li.innerHTML = holder.tasks[i].who + " should " + holder.tasks[i].toDoDes + ". It is  " + holder.tasks[i].diff +"."
+      // Append li to ul
+      ul.appendChild(li)
+    }
+    // Append the ul to the #list-container
+    container.appendChild(ul)
+  }
+
+  // Will run after all HTML is done rendering
+  window.onload = function(){
+    console.log("I'm ready!");
+    var form = document.querySelector("form");
+    form.onsubmit = appBuilder;
+  }
+
+
+  // Form submit handler
+  function appBuilder(){
+    console.log("I just built a task!")
+    event.preventDefault();
+    var form = document.querySelector("form");
+	  var radios = document.getElementsByName('who');
+	    for (var i=0, length = radios.length; i < length; i++) {
+		      if (radios[i].checked) {
+	  var e = document.getElementById("ddlViewBy");
+	  var strUser = e.options[e.selectedIndex].text;
+		var newToDos = {toDoDes: form.toDoDes.value, who: radios[i].value, diff: strUser};
+    holder.tasks.push(newToDos)
+        break;
+    }
+}
+    drawList();
+  }
+
+    </script>
+  </body>
+</html>
